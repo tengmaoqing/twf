@@ -11,9 +11,9 @@ if (!commitRE.test(msg)) {
     `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(`invalid commit message format.`)}\n\n` +
     chalk.red(`  Proper commit message format is required for automated changelog generation. Examples:\n\n`) +
     `    ${chalk.green(`feat(options): 增加XX功能`)}\n` +
-    `    ${chalk.green(`fix(login): 部分用户登录失败 (close #TAPD BUG ID)`)}\n\n` +
-    chalk.red(`  参考commit 规则 .github/COMMIT_CONVENTION.md \n`) +
-    chalk.red(`  建议使用 ${chalk.cyan(`npm run commit`)} 按提示来生成commit.\n`)
+    `    ${chalk.green(`fix(login): 部分用户登录失败 (close #TAPD_BUG_ID)`)}\n\n` +
+    chalk.red(`  参考commit 规则 cz-conventional-changelog \n`) +
+    chalk.red(`  建议使用 ${chalk.cyan(`twf`)} 按提示来生成commit.\n`)
   )
   process.exit(1)
 }

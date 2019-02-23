@@ -4,27 +4,41 @@
 const path = require('path');
 const program = require('commander')
 const bootstrap = require('commitizen/dist/cli/git-cz').bootstrap
+const fs = require("fs")
 // const p = require("./package.json");
-const chalk = require('chalk')
+// const chalk = require('chalk')
 
 const REP_NAME = 'twf'
 
 function start () {
-  bootstrap({
-    cliPath: path.join(__dirname, '../../node_modules/commitizen'),
-    config: {
-      "path": "cz-conventional-changelog"
+  let cliPath = path.join(__dirname, '../../node_modules/commitizen')
+  
+  fs.stat(cliPath, function (err, stat) {
+    if (err || !stat.isDirectory()) {
+      cliPath = path.join(__dirname, './node_modules/commitizen')
+      // throw err
     }
+
+    bootstrap({
+      cliPath,
+      config: {
+        "path": "cz-conventional-changelog"
+      }
+    })
   })
 }
 
 function initHook() {
-  var p = require('./package.json');
-  p.husky = p.husky || {};
-  p.husky.hooks = {
-    'commit-msg': `./node_modules/${REP_NAME}/index.js`
-  };
-  require("fs").writeFileSync('./package.json', JSON.stringify(p, null, 2) + require("os").EOL)
+  try {
+    const p = require(path.join(__dirname, '../../package.json'));
+    p.husky = p.husky || {};
+    p.husky.hooks = {
+      'commit-msg': `node ./node_modules/${REP_NAME}/verify-commit-msg.js`
+    };
+    require("fs").writeFileSync('./package.json', JSON.stringify(p, null, 2) + require("os").EOL)
+  } catch (err) {
+    throw err
+  }
 }
 
 let cmdValue;
